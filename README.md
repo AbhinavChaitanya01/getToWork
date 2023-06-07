@@ -1,4 +1,18 @@
-# Getting Started with Create React App
+# getToWork
+## a job search portal
+<img width="720" alt="image" src="https://github.com/AbhinavChaitanya01/getToWork/assets/98750072/22e875b2-ca60-47e3-bc8e-466c5a82d4a5">
+
+
+
+- A full-stack web project developed under Rational Unified Process SDLC.
+- CRUD operations using MongoDB database.
+- Frontend made with help of React.js, MaterialUI and Bootstrap.
+- Managed system states using React useContext hook.
+- Advanced search filters (based on roles,location,salary range,etc.) to save search time for job seekers.
+- Version-1,visit - https://get-towork.vercel.app/
+
+
+## Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
