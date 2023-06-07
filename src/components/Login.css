@@ -1,0 +1,70 @@
+.login-headertext{
+    text-align: center;
+    color:#fff;
+    font-family: Playfair Display;
+    padding-top:10px;
+    padding-bottom: 0;
+}
+/* .loginTextField{
+    margin-bottom: 2rem !important;
+} */
+.loginbox{
+    background-color:#034159;
+    height: 100vh;
+}
+.sub-box{
+    position: relative;
+    width: 40vw;
+    padding: 5px;
+    top: 5%;
+    left:30%;
+    border-radius: 16px;
+}
+
+.btn{
+    background-color:#008F8C;
+    color:#023535;
+    font-weight: 700;
+    font-family: Handlee;
+    font-size: 1rem;
+    width: 100%
+}
+.btn:hover{
+    background-color:#008F8C;
+    /* color:#9FC131; */
+}
+
+@media screen and (min-width: 1024px) {
+    
+}
+
+/* For Tablet View */
+@media screen and (min-device-width: 550px) 
+and (max-device-width: 1024px) {
+    
+}
+
+/* For Mobile Portrait View */
+@media screen and (max-device-width: 550px) and (min-device-width:359px) 
+and (orientation: portrait) {
+    .sub-box{
+        width: 100%;
+        /* position: absolute; */
+        left:0;
+    }
+}
+
+@media screen and (max-device-width: 358px)
+and (orientation: portrait) {
+    .sub-box{
+        width: 100%;
+        /* position: absolute; */
+        left:0;
+    }
+}
+
+/* For Mobile Landscape View */
+@media screen and (max-device-width: 640px) 
+and (orientation: landscape) {
+    
+}

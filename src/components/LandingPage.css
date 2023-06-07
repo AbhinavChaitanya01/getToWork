@@ -1,0 +1,314 @@
+/* .navbar{
+    display: flex;
+}
+#Navig{
+    opacity: 0.9; 
+    filter:(opacity=70);    
+}
+.nav1{
+    display: flex;
+    justify-content: flex-start;
+}
+.nav2{
+    display: flex;
+    justify-content: flex-end;
+}
+.nav-link{
+    font-family: Roboto;
+    margin-left: 20px;
+    font-family: handlee;
+    font-size: 1.1rem;
+}
+
+.navbar-brand{
+    font-family: Montserrat;
+    font-size: 1.75rem;
+} */
+.intro{
+    display: flex;
+    text-align: center;
+}
+.main-landing-content{
+    padding-top: 3rem;
+    margin-left:10%;
+}
+.landing-Img{
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 3rem;
+    margin-right:15%;
+}
+.landing-Img img{
+    width: 90%;
+    /* border-radius: 10%; */
+    border:2px solid #91F2E9;
+}
+.main-theme-text{
+    font-family: Playfair Display;
+    font-weight: 700;
+    font-size: 3rem;
+    color:#F27405;
+}
+.secondary-theme-text{
+    font-family:Handlee;
+    font-weight: 500;
+    font-size: 2rem;
+}
+
+#FAQs{
+    display: flex;
+    flex-direction:column;
+    justify-content:right;
+}
+/* For Desktop View */
+@media screen and (min-width: 1024px) {
+    .landing-Img img{
+        width: 90%;
+        /* border-radius: 10%; */
+    }
+    .main-theme-text{
+        font-family: Playfair Display;
+        font-weight: 700;
+        font-size: 3rem;
+    }
+    .secondary-theme-text{
+        font-family: Handlee;
+        font-weight: 500;
+        font-size: 2rem;
+    }  
+    #FAQs{
+        padding-left: 20%;
+        padding-right: 20%;
+    }
+}
+
+/* For Tablet View */
+@media screen and (min-device-width: 550px) 
+and (max-device-width: 1024px) {
+    .landing-Img img{
+        width: 90%;
+        height: 90%;
+        /* border-radius: 10%; */
+    }
+    .main-theme-text{
+        font-family: Playfair Display;
+        font-weight: 700;
+        font-size: 1.75rem;
+    }
+    .secondary-theme-text{
+        font-family: Handlee;
+        font-weight: 500;
+        font-size: 1rem;
+    }
+    #FAQs{
+        padding-left: 20%;
+        padding-right: 20%;
+        justify-content:space-evenly;
+    }
+}
+
+/* For Mobile Portrait View */
+@media screen and (max-device-width: 550px) and (min-device-width:359px) 
+and (orientation: portrait) {
+    .landing-Img img{
+        width: 100%;
+        height: 100%;
+        /* border-radius: 10%; */
+    }
+    .landing-Img{
+        margin-right: 10px;
+    }
+    .main-landing-content{
+        padding-top: 3rem;
+        margin-left:10px;
+        padding-right: 10px;
+    }
+    .main-theme-text{
+        font-family: Playfair Display;
+        font-weight: 700;
+        font-size: 2rem;
+    }
+    .secondary-theme-text{
+        font-family: Handlee;
+        font-weight: 500;
+        font-size: 1.5rem;
+    }
+    .cta-button{
+        padding:2px 4px;
+        /* font-size:30%; */
+        line-height: 1;
+    }
+    .buzz-text{
+        text-align: center;
+        font-size: 0.75rem;
+        font-weight: 500;
+        font-family: Playfair Display;
+        color:#91F2E9;
+    }
+    .testimonial-text{
+        font-size: 0.6rem;
+    }
+}
+
+@media screen and (max-device-width: 358px)
+and (orientation: portrait) {
+    .landing-Img img{
+        width: 100%;
+        height: 100%;
+        /* border-radius: 10%; */
+    }
+    .landing-Img{
+        margin-right: 10px;
+        display: none;
+    }
+    .main-landing-content{
+        padding-top: 3rem;
+        margin-left:10px;
+        padding-right: 10px;
+    }
+    .main-theme-text{
+        font-family: Playfair Display;
+        font-weight: 700;
+        font-size: 2rem;
+    }
+    .secondary-theme-text{
+        font-family: Handlee;
+        font-weight: 500;
+        font-size: 1.5rem;
+    }
+    .cta-button{
+        padding:2px 4px;
+        /* font-size:30%; */
+        line-height: 1;
+    }
+    .buzz-text{
+        text-align: center;
+        font-size: 0.75rem;
+        font-weight: 500;
+        font-family: Playfair Display;
+        color:#91F2E9;
+    }
+    .testimonial-text{
+        font-size: 0.6rem;
+    }
+}
+
+/* For Mobile Landscape View */
+@media screen and (max-device-width: 640px) 
+and (orientation: landscape) {
+    /* .landing-Img img{ */
+        /* width: 90%;
+        height: 90%; */
+        /* border-radius: 10%; */
+    /* } */
+    .main-theme-text{
+        font-family: Playfair Display;
+        font-weight: 700;
+        font-size: 3rem;
+    }
+    .secondary-theme-text{
+        font-family: Handlee;
+        font-weight: 500;
+        font-size: 2rem;
+    }
+    .cta-button{
+        padding:2px 4px;
+        font-size:80%;
+        line-height: 1;
+    }
+    .testimonial-text{
+        font-size: 0.6rem;
+    }
+    #FAQs{
+        padding-left: 20%;
+        padding-right: 20%;
+    }
+}
+.cta-button{
+    position: relative;
+    display: inline-block;
+    font-size: 16px;
+    color: #000;
+    padding: 10px 15px;
+    border: 2px solid #bebebe;
+    margin-top: 10px;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+.sub-intro{
+    padding: 7% 15% 1% 15%;
+}
+.buzz-text{
+    text-align: center;
+    font-size: 1.25rem;
+    font-weight: 500;
+    font-family: Playfair Display;
+    color:#91F2E9;
+}
+.ticks{
+    padding: 10px;
+}
+.landingBody{
+    background-color:#034159;
+    color: white
+}
+
+.testimonial-heading{
+    font-family: Sacramento;
+    font-size:4rem;
+    padding-top: 2rem;
+    text-align: center;
+    font-weight: 400;
+}
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 10% 2rem 10%;
+}
+#testimonials{
+    text-align: center;
+}
+.carousel-item{
+    padding: 3% 15%; 
+    text-align: center;
+}
+.testimonial-text{
+    font-family: Playfair Display;
+    padding:10px;
+    font-weight:500;
+    font-size:large;
+    font-size: 1.3rem;
+    line-height: 1.5;
+    color:#F27405;
+}
+.testimonial-image{
+    border-radius: 50%;
+}
+
+.FAQ-heading{
+    font-family: Handlee;
+    font-size: 3rem;
+    text-align: center;
+
+}
+footer{
+    font-family:Playfair Display;
+    /* background-color: #FFCB9A; */
+    padding: 30px 30px 10px 30px;
+}
+footer h2{
+    text-align: center;
+    padding-bottom: 20px;
+}
+footer li{
+    padding: 0 5% 0 5%;
+    color: #91F2E9;
+}
+
+footer p{
+    text-align: center;
+    padding: 15px;
+    line-height: 5px;
+}
