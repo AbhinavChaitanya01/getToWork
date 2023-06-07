@@ -13,7 +13,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if(credentials.userType==='recruiter'){
-      const response = await fetch("http://localhost:5000/api/auth/recruiterlogin", {
+      const response = await fetch("https://get-to-work.vercel.app/api/auth/recruiterlogin", {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -34,7 +34,7 @@ const Login = () => {
       }
     }
     else if (credentials.userType==='seeker'){
-      const response = await fetch("http://localhost:5000/api/auth/jobseekerlogin", {
+      const response = await fetch("https://get-to-work.vercel.app/api/auth/jobseekerlogin", {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
