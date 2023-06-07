@@ -7,6 +7,7 @@
 - A full-stack web project developed under Rational Unified Process SDLC.
 - CRUD operations using MongoDB database.
 - Frontend made with help of React.js, MaterialUI and Bootstrap.
+- Integrated authentication using JSON Web Tokens (JWT) and incorporated npm Bcrypt.js package for hashing passwords.
 - Managed system states using React useContext hook.
 - Advanced search filters (based on roles,location,salary range,etc.) to save search time for job seekers.
 - Version-1,visit - https://get-towork.vercel.app/
