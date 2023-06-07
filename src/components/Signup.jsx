@@ -13,7 +13,7 @@ const Signup = () => {
     const handleSubmit= async(e)=>{
       e.preventDefault();
       if(credentials.userType==='recruiter'){
-        const response = await fetch("http://localhost:5000/api/auth/createrecruiter", {
+        const response = await fetch("https://get-to-work.vercel.app/api/auth/createrecruiter", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -32,7 +32,7 @@ const Signup = () => {
           toast.error("Invalid credentials!");
         }
       }else if(credentials.userType==='seeker'){
-        const response = await fetch("http://localhost:5000/api/auth/createjobseeker", {
+        const response = await fetch("https://get-to-work.vercel.app/api/auth/createjobseeker", {
           method: 'POST',
           headers: {
               'Content-Type': 'application/json'
