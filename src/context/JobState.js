@@ -2,7 +2,7 @@ import React,{useState} from 'react'
 import JobContext from './jobcontext'
 
 const JobState = (props) => {
-    const host = "http://localhost:5000";
+    const host = "https://get-to-work.vercel.app";
     const jobList =[];
     const currSeekerDetailsList =[];
     const [jobs,setJobs]= useState(jobList);
