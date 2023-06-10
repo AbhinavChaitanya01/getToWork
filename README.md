@@ -5,6 +5,7 @@
 
 
 - A full-stack web project developed under Rational Unified Process SDLC.
+- Created relevant documentation that includes every step in the SDLC, including Problem statement, Initial Requirement Document, SRS(Software Requirement Specification document), Activity diagrams, Sequence Diagrams, State chart Diagrams, and Test-case matrix.
 - CRUD operations using MongoDB database.
 - Frontend made with help of React.js, MaterialUI and Bootstrap.
 - Integrated authentication using JSON Web Tokens (JWT) and incorporated npm Bcrypt.js package for hashing passwords.
