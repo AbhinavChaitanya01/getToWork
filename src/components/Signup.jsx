@@ -4,14 +4,17 @@ import { useState } from 'react';
 import {TextField,MenuItem, Paper} from '@mui/material'
 import { useNavigate } from 'react-router-dom';
 import  toast  from 'react-hot-toast';
-
+import Loader from './Loader';
 
 const Signup = () => {
     const [credentials, setCredentials] = useState({userType:"",companyname:"",name:"",email: "", password: "",username:""});
     let navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
 
     const handleSubmit= async(e)=>{
       e.preventDefault();
+      setLoading(true);
+      try{
       if(credentials.userType==='recruiter'){
         const response = await fetch("https://get-to-work.vercel.app/api/auth/createrecruiter", {
             method: 'POST',
@@ -26,9 +29,11 @@ const Signup = () => {
           localStorage.setItem('token', json.authToken); 
           localStorage.setItem('role','recruiter');
           navigate("/recruiterhomepage");
+          setLoading(false)
           toast.success("Recruiter account created successfully!");
         }
         else{
+          setLoading(false)
           toast.error("Invalid credentials or account already exists");
         }
       }else if(credentials.userType==='seeker'){
@@ -45,17 +50,29 @@ const Signup = () => {
           localStorage.setItem('token', json.authToken);
           localStorage.setItem('role','jobseeker'); 
           navigate("/seekerhomepage");
+          setLoading(false)
           toast.success("Job-seeker account created successfully!");
         }
         else{
+          setLoading(false)
           toast.error("Invalid credentials or account already exists!");
         }
       }else{
+        setLoading(false)
         toast.error("Kindly complete the form!");
       }
+    }catch (error) {
+      console.error('Error:', error);
+      toast.error('An error occurred');
+    } finally {
+      setLoading(false); // Set loading to false after API call completes or encounters an error
     }
+    };
     const handleChange=(e)=>{
       setCredentials({...credentials, [e.target.name]: e.target.value})
+    }
+    if(loading){
+      return <Loader />;
     }
   return (
     <div className='outer-box' style={{minHeight:'100vh'}}>

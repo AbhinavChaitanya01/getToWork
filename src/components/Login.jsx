@@ -53,9 +53,11 @@ const Login = () => {
           localStorage.setItem('token', json.authToken); 
           localStorage.setItem('role', 'jobseeker');
           navigate("/seekerhomepage");
+          setLoading(false)
           toast.success('Logged in successfully!');
         }
         else{
+          setLoading(false)
           toast.error("invalid credentials");
         }
   
