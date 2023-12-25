@@ -13,20 +13,32 @@ import {
 } from "@mui/material";
 import toast from "react-hot-toast";
 import JobSeekerNavbar from './JobSeekerNavbar';
-
+import Loader from './Loader';
 
 
 const SeekerHomePage = () => {
   let context = useContext(JobContext);
   const {seekerName,jobs,getAllJobs,getCurrSeeker} = context;
   const navigate = useNavigate();
+
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
-    if(localStorage.getItem('token')){
-      getAllJobs();
-      getCurrSeeker();
-    }else{
-      navigate("/login");
-    }
+    const fetchData = async () => {
+      try {
+        if (localStorage.getItem('token')) {
+          await getAllJobs();
+          await getCurrSeeker();
+          setLoading(false); // Once data is fetched, set loading to false
+        } else {
+          navigate('/login');
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        setLoading(false); // Handle errors by setting loading to false
+      }
+    };
+
+    fetchData();
     // eslint-disable-next-line
   }, []);
 
@@ -93,7 +105,9 @@ const SeekerHomePage = () => {
       setFilterTrue(true);
     };
     
-
+    if(loading){
+      return <Loader />;
+    }
 
   return (
     
@@ -221,7 +235,7 @@ const SeekerHomePage = () => {
       </Paper>:<></>}
     </div>
       <div className='row d-flex justify-content-center'style={{marginRight:'0%'}}>
-        <div style={{textAlign:"center"}}> 
+        <div style={{fontFamily:'Handlee',fontSize:'2rem',textAlign:"center",color:"#fff"}}> 
           {jobs.length===0 && 'No jobs open to display'}
         </div>
         {/* <div style={{width:'80%',margin:'auto'}}> */}

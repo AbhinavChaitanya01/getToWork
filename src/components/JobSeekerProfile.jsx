@@ -10,7 +10,7 @@ import {
 import { MuiChipsInput } from "mui-chips-input";
 import JobContext from "../context/jobcontext";
 import  toast  from 'react-hot-toast';
-
+import Loader from "./Loader";
 
 const JobSeekerProfile = () => {
   const navigate = useNavigate();
@@ -19,13 +19,23 @@ const JobSeekerProfile = () => {
 
   const [isEditMode, setIsEditMode] = useState(false);
   const [editedDetails, setEditedDetails] = useState({});
-
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
-    if (localStorage.getItem("token")) {
-      getCurrSeekerAllDetails();
-    } else {
-      navigate("/login");
-    }
+    const fetchData = async () => {
+      try {
+        if (localStorage.getItem('token')) {
+          await getCurrSeekerAllDetails();
+          setLoading(false); // Once data is fetched, set loading to false
+        } else {
+          navigate('/login');
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        setLoading(false); // Handle errors by setting loading to false
+      }
+    };
+
+    fetchData();
     // eslint-disable-next-line
   }, []);
 
@@ -54,12 +64,18 @@ const JobSeekerProfile = () => {
   };
 
   const handleSaveChanges = () => {
+    if (!editedDetails.fullname || !editedDetails.email) {
+      toast.error('Full Name and Email are required!');
+      return; // Prevent further execution if fields are empty
+    }  
     // ...save changes logic
     toggleEditMode();
     editJobSeekerProfile(editedDetails._id,editedDetails.fullname,editedDetails.email,editedDetails.education,editedDetails.skills,editedDetails.experienceYrs,editedDetails.about,editedDetails.resume,editedDetails.connectionSites)
     toast.success('Edited profile successfully');
   };
-
+  if (loading) {
+    return <Loader />;
+  }
   return (
     <div
       style={{
@@ -101,7 +117,7 @@ const JobSeekerProfile = () => {
                 htmlFor="fullname"
                 style={{ marginRight: "10px", width: "30%" }}
               >
-                Full Name
+                Full Name*
               </label>
               <input
                 type="text"
@@ -110,7 +126,8 @@ const JobSeekerProfile = () => {
                 style={{ flex: "1", marginLeft: "10px", width: "70%" }}
                 onChange={handleInputChange}
                 readOnly={!isEditMode}
-                minlength="3"
+                minlength={3}
+                required
               />
             </div>
             <div
@@ -125,7 +142,7 @@ const JobSeekerProfile = () => {
                 htmlFor="email"
                 style={{ marginRight: "10px", width: "30%" }}
               >
-                Email ID
+                Email ID*
               </label>
               <input
                 type="email"
@@ -134,7 +151,8 @@ const JobSeekerProfile = () => {
                 style={{ flex: "1", marginLeft: "10px", width: "70%" }}
                 onChange={handleInputChange}
                 readOnly={!isEditMode}
-                minlength="3"
+                minlength={3}
+                required
               />
             </div>
             <div

@@ -29,7 +29,7 @@ const Signup = () => {
           toast.success("Recruiter account created successfully!");
         }
         else{
-          toast.error("Invalid credentials!");
+          toast.error("Invalid credentials or account already exists");
         }
       }else if(credentials.userType==='seeker'){
         const response = await fetch("https://get-to-work.vercel.app/api/auth/createjobseeker", {
@@ -48,7 +48,7 @@ const Signup = () => {
           toast.success("Job-seeker account created successfully!");
         }
         else{
-          toast.error("Invalid credentials!");
+          toast.error("Invalid credentials or account already exists!");
         }
       }else{
         toast.error("Kindly complete the form!");

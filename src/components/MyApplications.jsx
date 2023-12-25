@@ -3,22 +3,32 @@ import { Typography, Chip, Modal } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import JobContext from '../context/jobcontext';
 import toast from 'react-hot-toast';
+import Loader from './Loader';
 
 const MyApplications = () => {
 
     const navigate = useNavigate();
     const context = useContext(JobContext);
     const {myApplications,fetchMyApplications,deleteApplication} = context;
-
+    const [loading, setLoading] = useState(true);
     useEffect(() => {
-        if (localStorage.getItem('token')) {
-          fetchMyApplications();
-        } else {
-          navigate('/login');
+      const fetchData = async () => {
+        try {
+          if (localStorage.getItem('token')) {
+            await fetchMyApplications();
+            setLoading(false); // Once data is fetched, set loading to false
+          } else {
+            navigate('/login');
+          }
+        } catch (error) {
+          console.error('Error fetching data:', error);
+          setLoading(false); // Handle errors by setting loading to false
         }
-        // eslint-disable-next-line
+      };
+  
+      fetchData();
+      // eslint-disable-next-line
     }, []);
-
     const formatDate = (dateString) => {
         const dateObj = new Date(dateString);
         const options = {
@@ -51,6 +61,9 @@ const MyApplications = () => {
             toast.error('Failed to withdraw.');
         }
     };
+    if (loading) {
+      return <Loader />;
+    }
   return (
     <div
       style={{
@@ -76,6 +89,12 @@ const MyApplications = () => {
           </div>
         </div>
       </Modal>
+      {myApplications.length===0?
+        <div style={{ textAlign: 'center', marginTop: '20px' }}>
+          <h3 style={{fontFamily:"Playfair Display", color:"#fff"}}>You don't have any active applications.</h3>
+          <p style={{fontFamily:"Playfair Display", color:"#fff"}}>We have plenty job openings, search the one that matches you and apply easily!</p>
+        </div>
+      :
         <div className='row d-flex justify-content-center' style={{ marginRight: '0%' }}>
         {myApplications.map((application) => (
           <div key={application._id} className="card col-md-4 mx-2 my-3">
@@ -105,7 +124,7 @@ const MyApplications = () => {
             </div>
           </div>
         ))}
-      </div>
+      </div>}
     </div>
   )
 }

@@ -3,18 +3,29 @@ import { Typography, Chip, Modal } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import JobContext from '../context/jobcontext';
 import toast from 'react-hot-toast';
+import Loader from './Loader';
 
 const AllJobsCreated = () => {
   const navigate = useNavigate();
   const context = useContext(JobContext);
   const { jobsCreated, getJobsCreated, deleteJob } = context;
-
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
-    if (localStorage.getItem('token')) {
-      getJobsCreated();
-    } else {
-      navigate('/login');
-    }
+    const fetchData = async () => {
+      try {
+        if (localStorage.getItem('token')) {
+          await getJobsCreated();
+          setLoading(false); // Once data is fetched, set loading to false
+        } else {
+          navigate('/login');
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        setLoading(false); // Handle errors by setting loading to false
+      }
+    };
+
+    fetchData();
     // eslint-disable-next-line
   }, []);
 
@@ -44,7 +55,9 @@ const AllJobsCreated = () => {
       toast.error('Failed to delete vacancy.');
     }
   };
-
+  if(loading){
+    return <Loader />;
+  }
   return (
     <div
       style={{
@@ -85,6 +98,11 @@ const AllJobsCreated = () => {
           </div>
         </div>
       </div>
+      {jobsCreated.length === 0 ? 
+    <div style={{ textAlign: 'center', marginTop: '20px' }}>
+      <h3 style={{fontFamily:"Playfair Display", color:"#fff"}}>You haven't created any job posts yet.</h3>
+      <p style={{fontFamily:"Playfair Display", color:"#fff"}}>Create one now!</p>
+    </div> :
       <div className='row d-flex justify-content-center' style={{ marginRight: '0%' }}>
         {jobsCreated.map((job) => (
           <div key={job._id} className="card col-md-4 mx-2 my-3">
@@ -157,7 +175,7 @@ const AllJobsCreated = () => {
             </div>
           </div>
         ))}
-      </div>
+      </div>}
     </div>
   );
 };

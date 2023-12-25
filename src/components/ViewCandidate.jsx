@@ -1,8 +1,8 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext,useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import JobContext from '../context/jobcontext';
 import { Typography, Paper, Box ,Chip} from '@mui/material';
-
+import Loader from './Loader';
 
 const ViewCandidate = () => {
     const location = useLocation();
@@ -10,14 +10,30 @@ const ViewCandidate = () => {
     const applicant = location.state.applicant;
     let context = useContext(JobContext);
     const {Applicant, viewApplicant} = context;
-    useEffect(() => {
-        if (localStorage.getItem('token')) {
-          viewApplicant(applicant);
-        } else {
-          navigate('/login');
-        }
+    const [loading, setLoading] = useState(true);
+
+  
+      useEffect(() => {
+        const fetchData = async () => {
+          try {
+            if (localStorage.getItem('token')) {
+              await viewApplicant(applicant);
+              setLoading(false); // Once data is fetched, set loading to false
+            } else {
+              navigate('/login');
+            }
+          } catch (error) {
+            console.error('Error fetching data:', error);
+            setLoading(false); // Handle errors by setting loading to false
+          }
+        };
+    
+        fetchData();
         // eslint-disable-next-line
       }, []);
+      if (loading) {
+        return <Loader />;
+      }
   return (
     <div style ={{
         backgroundColor: '#034159',

@@ -1,6 +1,6 @@
 import React , { useEffect, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import Loader from "./Loader";
 import {
   Typography,
   Paper,
@@ -21,12 +21,33 @@ const RecruiterProfile = () => {
   const [isEditMode, setIsEditMode] = useState(false);
   const [editedDetails, setEditedDetails] = useState({});
   
+  const [loading, setLoading] = useState(true);
+
+  // useEffect(() => {
+  //   if (localStorage.getItem("token")) {
+  //     getCurrRecruiterAllDetails();
+  //   } else {
+  //     navigate("/login");
+  //   }
+  //   // eslint-disable-next-line
+  // }, []);
+
   useEffect(() => {
-    if (localStorage.getItem("token")) {
-      getCurrRecruiterAllDetails();
-    } else {
-      navigate("/login");
-    }
+    const fetchData = async () => {
+      try {
+        if (localStorage.getItem('token')) {
+          await getCurrRecruiterAllDetails();
+          setLoading(false); // Once data is fetched, set loading to false
+        } else {
+          navigate('/login');
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        setLoading(false); // Handle errors by setting loading to false
+      }
+    };
+
+    fetchData();
     // eslint-disable-next-line
   }, []);
 
@@ -47,11 +68,19 @@ const RecruiterProfile = () => {
     }));
   };
   const handleSaveChanges= ()=>{
+    if (!editedDetails.companyName|| !editedDetails.recruiterName || !editedDetails.email) {
+      toast.error('Required Fields should not be empty!');
+      return; // Prevent further execution if fields are empty
+    }
     toggleEditMode();
+    console.log(editedDetails.companySize);
     editRecruiterProfile(editedDetails._id,editedDetails.companyName,editedDetails.recruiterName,editedDetails.email,editedDetails.companySize,editedDetails.description,editedDetails.website)
     toast.success('Edited profile successfully');
   }
-  return (
+  if (loading) {
+    return <Loader />;
+  }
+  else return (
     <div
       style={{
         backgroundColor: "#034159",
@@ -88,16 +117,17 @@ const RecruiterProfile = () => {
             htmlFor="companyName"
             style={{ marginRight: "10px", width: "30%" }}
           >
-            Name Of Company
+            Name Of Company*
           </label>
           <input
             type="text"
             id="companyName"
             defaultValue={editedDetails.companyName||""}
             style={{ flex: "1", marginLeft: "10px", width: "70%" }}
-            minlength="3"
+            minlength={3}
             onChange={handleInputChange}
             readOnly={!isEditMode}
+            required
           />
         </div>
         <div
@@ -112,16 +142,17 @@ const RecruiterProfile = () => {
             htmlFor="recruiterName"
             style={{ marginRight: "10px", width: "30%" }}
           >
-          Recruiter's Name
+          Recruiter's Name*
           </label>
           <input
             type="text"
             id="recruiterName"
             style={{ flex: "1", marginLeft: "10px", width: "70%" }}
             defaultValue={editedDetails.recruiterName||""}
-            minlength="3"
+            minlength={3}
             onChange={handleInputChange}
             readOnly={!isEditMode}
+            required
           />
         </div>
         <div
@@ -136,7 +167,7 @@ const RecruiterProfile = () => {
             htmlFor="email"
             style={{ marginRight: "10px", width: "30%" }}
           >
-            Email ID
+            Email ID*
           </label>
           <input
             type="email"
@@ -146,6 +177,7 @@ const RecruiterProfile = () => {
             minlength="3"
             onChange={handleInputChange}
             readOnly={!isEditMode}
+            required
           />
         </div>
         <div
@@ -169,10 +201,10 @@ const RecruiterProfile = () => {
             onChange={handleInputChange}
             disabled={!isEditMode}
           >
-          <option value='10-100'>10-100</option>
-          <option value='100-1000'>100-1000</option>
-          <option value='1000-10000'>1000-10000</option>
-          <option value='10000+'>10000+</option>
+          <option value="10-100">10-100</option>
+          <option value="100-1000">100-1000</option>
+          <option value="1000-10000">1000-10000</option>
+          <option value="10000+">10000+</option>
           </select>
 
         </div>

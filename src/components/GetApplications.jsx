@@ -1,9 +1,9 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import JobContext from '../context/jobcontext';
 import { Typography, Paper, Box } from '@mui/material';
 import toast from 'react-hot-toast';
-
+import Loader from './Loader';
 
 const GetApplications = () => {
   const location = useLocation();
@@ -12,14 +12,25 @@ const GetApplications = () => {
   let context = useContext(JobContext);
   const { applicationsFetched, fetchAllApplications } = context;
 
-  useEffect(() => {
-    if (localStorage.getItem('token')) {
-      fetchAllApplications(jobid);
-    } else {
-      navigate('/login');
-    }
-    // eslint-disable-next-line
-  }, []);
+  const [loading, setLoading] = useState(true);
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          if (localStorage.getItem('token')) {
+            await fetchAllApplications(jobid);
+            setLoading(false); // Once data is fetched, set loading to false
+          } else {
+            navigate('/login');
+          }
+        } catch (error) {
+          console.error('Error fetching data:', error);
+          setLoading(false); // Handle errors by setting loading to false
+        }
+      };
+  
+      fetchData();
+      // eslint-disable-next-line
+    }, []);
 
   const formatDate = (dateString) => {
     const dateObj = new Date(dateString);
@@ -34,7 +45,9 @@ const GetApplications = () => {
     };
     return dateObj.toLocaleDateString('en-US', options);
   };
-
+  if(loading){
+    return <Loader />;
+  }
   return (
     <div
       style={{
@@ -45,6 +58,11 @@ const GetApplications = () => {
         minHeight: '100vh',
       }}
     >
+    {applicationsFetched.length === 0 ? 
+    <div style={{ textAlign: 'center', marginTop: '20px' }}>
+      <h3 style={{fontFamily:"Playfair Display", color:"#fff"}}>No applications have been received yet.</h3>
+      <p style={{fontFamily:"Playfair Display", color:"#fff"}}>Check back later for updates!</p>
+    </div> :
       <div className='row d-flex justify-content-center' style={{ marginRight: '0%' }}>
         {applicationsFetched.map((application) => (
           <div key={application._id} className="card col-md-4 col-lg-4 mx-2 my-3">
@@ -66,7 +84,7 @@ const GetApplications = () => {
             </div>
           </div>
         ))}
-      </div>
+      </div>}
     </div>
   )
 }

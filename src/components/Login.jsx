@@ -3,66 +3,80 @@ import "./Login.css"
 import {TextField,MenuItem, Paper} from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import  toast  from 'react-hot-toast';
+import Loader from './Loader';
 
 const Login = () => {
   // const [userType,setUserType]=useState('');
 
   const [credentials, setCredentials] = useState({userType:"",email: "", password: ""});
   let navigate = useNavigate(); 
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if(credentials.userType==='recruiter'){
-      const response = await fetch("https://get-to-work.vercel.app/api/auth/recruiterlogin", {
-        method: 'POST',
-        headers: {
+    setLoading(true);
+
+    try {
+      if (credentials.userType === 'recruiter') {
+        const response = await fetch("https://get-to-work.vercel.app/api/auth/recruiterlogin", {
+          method: 'POST',
+          headers: {
             'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({email: credentials.email, password: credentials.password})
-      });
-      const json = await response.json()
-      console.log(json);
-      if (json.success){
-        // Save the auth token and redirect
-        localStorage.setItem('token', json.authToken); 
-        localStorage.setItem('role', 'recruiter');
-        navigate("/recruiterhomepage");
-        toast.success('Logged in successfully!');
+          },
+          body: JSON.stringify({ email: credentials.email, password: credentials.password })
+        });
+  
+        const json = await response.json();
+  
+        if (json.success) {
+          localStorage.setItem('token', json.authToken);
+          localStorage.setItem('role', 'recruiter');
+          navigate("/recruiterhomepage");
+          setLoading(false)
+          toast.success('Logged in successfully!');
+        } else {
+          setLoading(false)
+          toast.error('Invalid credentials');
+        }
+      } else if (credentials.userType === 'seeker') {
+        const response = await fetch("https://get-to-work.vercel.app/api/auth/jobseekerlogin", {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({email: credentials.email, password: credentials.password})
+        });
+        const json = await response.json()
+        console.log(json);
+        if (json.success){
+          // Save the auth token and redirect
+          localStorage.setItem('token', json.authToken); 
+          localStorage.setItem('role', 'jobseeker');
+          navigate("/seekerhomepage");
+          toast.success('Logged in successfully!');
+        }
+        else{
+          toast.error("invalid credentials");
+        }
+  
+      } else {
+        setLoading(false)
+        toast.error('Kindly complete the form');
       }
-      else{
-        toast.error('invalid credentials');
-      }
+    } catch (error) {
+      console.error('Error:', error);
+      toast.error('An error occurred');
+    } finally {
+      setLoading(false); // Set loading to false after API call completes or encounters an error
     }
-    else if (credentials.userType==='seeker'){
-      const response = await fetch("https://get-to-work.vercel.app/api/auth/jobseekerlogin", {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({email: credentials.email, password: credentials.password})
-      });
-      const json = await response.json()
-      console.log(json);
-      if (json.success){
-        // Save the auth token and redirect
-        localStorage.setItem('token', json.authToken); 
-        localStorage.setItem('role', 'jobseeker');
-        navigate("/seekerhomepage");
-        toast.success('Logged in successfully!');
-      }
-      else{
-        toast.error("invalid credentials");
-      }
-    }
-    else{
-      toast.error('Kindly complete the form');
-    }
-  }
+  };
+  
 
   const handleChange=(e)=>{
     setCredentials({...credentials, [e.target.name]: e.target.value});
-    console.log(e.target.name);
-    console.log(e.target.value);
+  }
+  if(loading){
+    return <Loader />;
   }
   return (
     <div className='loginbox'>
