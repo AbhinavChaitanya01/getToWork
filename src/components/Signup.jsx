@@ -1,3 +1,4 @@
+// Copyright © 2023 Abhinav Chaitanya
 import React from 'react'
 import "./Signup.css"
 import { useState } from 'react';

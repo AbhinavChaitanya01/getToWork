@@ -1,3 +1,4 @@
+// Copyright © 2023 Abhinav Chaitanya
 const mongoose = require('mongoose');
 const createdSchema = new mongoose.Schema({
     recruiter: {

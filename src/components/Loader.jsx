@@ -1,3 +1,4 @@
+// Copyright © 2023 Abhinav Chaitanya
 import React from 'react'
 import InfinityLoader from "./InfinityLoader.gif";
 const Loader = () => {

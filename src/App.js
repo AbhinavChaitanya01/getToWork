@@ -1,3 +1,4 @@
+// Copyright © 2023 Abhinav Chaitanya
 import Navbar from "./components/Navbar";
 import { BrowserRouter as Router, Routes, Route} from "react-router-dom";
 import LandingPage from "./components/LandingPage"

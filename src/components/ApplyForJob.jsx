@@ -1,3 +1,4 @@
+// Copyright © 2023 Abhinav Chaitanya
 import React, { useEffect, useContext, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import JobContext from '../context/jobcontext';
