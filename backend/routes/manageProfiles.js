@@ -1,3 +1,4 @@
+// Copyright © 2023 Abhinav Chaitanya
 const express = require('express');
 const Recruiter = require('../models/recruiter');
 const Seeker = require('../models/jobSeeker');

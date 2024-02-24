@@ -1,3 +1,4 @@
+// Copyright © 2023 Abhinav Chaitanya
 import React from 'react'
 import './LandingPage.css'
 import {Link} from "react-router-dom";

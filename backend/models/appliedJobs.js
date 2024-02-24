@@ -1,3 +1,4 @@
+// Copyright © 2023 Abhinav Chaitanya
 const mongoose = require("mongoose");
 
 const applicationSchema = new mongoose.Schema({

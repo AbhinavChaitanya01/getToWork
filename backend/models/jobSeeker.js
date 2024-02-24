@@ -1,3 +1,4 @@
+// Copyright © 2023 Abhinav Chaitanya
 const mongoose = require('mongoose');
 const seekerSchema = new mongoose.Schema({
     // full name of job seeker : to be asked at time of registration and obviously not unique

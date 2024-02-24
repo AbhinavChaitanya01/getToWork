@@ -1,3 +1,4 @@
+// Copyright © 2023 Abhinav Chaitanya
 import React, { useEffect, useContext, useRef, useState } from 'react';
 import { Typography, Chip, Modal } from '@mui/material';
 import { useNavigate } from 'react-router-dom';

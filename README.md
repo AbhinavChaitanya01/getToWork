@@ -11,7 +11,9 @@
 - Integrated authentication using JSON Web Tokens (JWT) and incorporated npm Bcrypt.js package for hashing passwords.
 - Managed system states using React useContext hook.
 - Advanced search filters (based on roles,location,salary range,etc.) to save search time for job seekers.
+- Made by Abhinav Chaitanya (2K21/SE/07) as the 4th semester project for the subject of Object Oriented Software Engineering at Delhi Technological University.
 - Version-1,visit - https://get-towork.vercel.app/
+- Copyright © 2023 Abhinav Chaitanya
 
 
 ## Getting Started with Create React App

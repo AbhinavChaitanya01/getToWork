@@ -1,3 +1,4 @@
+// Copyright © 2023 Abhinav Chaitanya
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 const fetchSeeker=(req,res,next)=>{

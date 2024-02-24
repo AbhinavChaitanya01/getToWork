@@ -1,3 +1,4 @@
+// Copyright © 2023 Abhinav Chaitanya
 require('dotenv').config();
 const mongoose = require('mongoose');
 const connectToMongoDB= ()=>{
