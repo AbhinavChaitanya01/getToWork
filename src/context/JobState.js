@@ -4,7 +4,7 @@ import JobContext from './jobcontext'
 
 const JobState = (props) => {
     const host = "https://get-to-work.vercel.app";
-//     const host = "http://localhost:5000";
+    // const host = "http://localhost:5000";
     const jobList =[];
     const currSeekerDetailsList =[];
     const [jobs,setJobs]= useState(jobList);
@@ -18,13 +18,51 @@ const JobState = (props) => {
     const [Applicant, setApplicant] = useState(currSeekerDetailsList)
 
     // get all jobs
-    const getAllJobs = async() =>{
-        const response = await fetch(`${host}/api/managejobs/fetchalljobs`,{
-          method:'GET',
-        })
-        const json = await response.json();
-        setJobs(json);
+    // const getAllJobs = async() =>{
+    //     const response = await fetch(`${host}/api/managejobs/fetchalljobs`,{
+    //       method:'GET',
+    //     })
+    //     const json = await response.json();
+    //     setJobs(json);
+    // }
+    // with pagination - 
+    const getAllJobs = async(page, limit) =>{
+      const response = await fetch(`${host}/api/managejobs/fetchalljobs?page=${page}&limit=${limit}`,{
+        method:'GET',
+      })
+      const data = await response.json();
+      const jobs = data.jobs;
+      const totalItems = data.totalJobsCount;
+      return {jobs, totalItems};
     }
+    const searchJobById = async (jobId) => {
+      const response = await fetch(`${host}/api/managejobs/searchjobbyid/${jobId}`, {
+          method: 'GET',
+      });
+      const json = await response.json();
+      const job = [json];
+      const totalItems = 1;
+      return {job,totalItems};
+    };
+    // const searchJobsByFilter = async (criteria) => {
+    //   const response = await fetch(`${host}/api/managejobs/searchjobsbyfilter?${new URLSearchParams(criteria)}`, {
+    //       method: 'GET',
+    //   });
+    //   const json = await response.json();
+    //   return json;
+    // };
+
+    // with pagination - 
+    const searchJobsByFilter = async (criteria, page, limit) => {
+      const response = await fetch(`${host}/api/managejobs/searchjobsbyfilter?${new URLSearchParams(criteria)}&page=${page}&limit=${limit}`, {
+          method: 'GET',
+      });
+      const data = await response.json();
+      const { jobs, pagination } = data;
+      const totalItems = pagination.totalItems;
+      return {jobs, totalItems};
+    };
+
     const getCurrSeeker= async()=>{
       const response = await fetch(`${host}/api/auth/getseeker`,{
         method:'GET',
@@ -211,7 +249,7 @@ const JobState = (props) => {
       setMyApplications(tempApplicationList);
     }
   return (
-    <JobContext.Provider value={{myApplications, Applicant,applicationsFetched ,jobsCreated ,seekerName,jobs,currSeekerDetails,currRecruiterDetails,viewRecruiterDetails,getAllJobs,getCurrSeeker,getCurrSeekerAllDetails,editJobSeekerProfile,getCurrRecruiterAllDetails,editRecruiterProfile,createdJob,viewThisRecruiter,getJobsCreated,deleteJob,editVacancyDetails,applyForJob, fetchAllApplications,viewApplicant,fetchMyApplications,deleteApplication}}>
+    <JobContext.Provider value={{myApplications, Applicant,applicationsFetched ,jobsCreated ,seekerName,jobs,currSeekerDetails,currRecruiterDetails,viewRecruiterDetails,getAllJobs,getCurrSeeker,getCurrSeekerAllDetails,editJobSeekerProfile,getCurrRecruiterAllDetails,editRecruiterProfile,createdJob,viewThisRecruiter,getJobsCreated,deleteJob,editVacancyDetails,applyForJob, fetchAllApplications,viewApplicant,fetchMyApplications,deleteApplication, searchJobById, searchJobsByFilter}}>
             {props.children}
     </JobContext.Provider>
   )

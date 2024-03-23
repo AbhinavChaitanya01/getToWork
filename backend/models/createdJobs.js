@@ -8,16 +8,19 @@ const createdSchema = new mongoose.Schema({
     // compulsory: (Eg SDE, UI-UX Designer)
     role: {
         type: String, 
-        required: true
+        required: true,
+        index : true
     },
     companyName:{
         type:String,
-        required:true
+        required:true,
+        index : true
     },
     // compulsory: (Eg permanent(full-time), Adhoc, intern)
     jobType:{
         type: String,
         required: true,
+        index : true
     },
 
     // compulsory: (Eg remote, onsite, hybrid)
@@ -52,7 +55,8 @@ const createdSchema = new mongoose.Schema({
 
     location:{
         type: String,
-        required: true
+        required: true,
+        index : true
     }
 })
 module.exports = mongoose.model('createdJob',createdSchema);
