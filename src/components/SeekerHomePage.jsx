@@ -207,7 +207,9 @@ const SeekerHomePage = () => {
       }
     }
   };
-
+  if(loading){
+    return <Loader/>
+  }
   return (
     <div
       style={{
