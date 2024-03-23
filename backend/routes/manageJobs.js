@@ -14,15 +14,128 @@ var fetchseeker = require("../middleware/fetchSeeker");
 const createdJobs = require('../models/createdJobs');
 
 
+// WITHOUT PAGINATION: v1: ROUTE 1: get all jobs posted on site using: GET "/api/managejobs/fetchalljobs"
+// router.get("/fetchalljobs",async(req,res)=>{
+//     try{
+//         const jobs = await Jobs.find();
+//         res.json(jobs);
+//     }catch(error){
+//         res.status(500).send("internal server error");
+//     }
+// })
+
 // ROUTE 1: get all jobs posted on site using: GET "/api/managejobs/fetchalljobs"
-router.get("/fetchalljobs",async(req,res)=>{
-    try{
-        const jobs = await Jobs.find();
-        res.json(jobs);
-    }catch(error){
-        res.status(500).send("internal server error");
+router.get("/fetchalljobs", async (req, res) => {
+    try {
+        const page = parseInt(req.query.page) || 1; // Default to page 1 if not provided
+        const limitPerPage = parseInt(req.query.limit) || 10; // Default to 20 items per page if not provided
+        const skip = (page - 1) * limitPerPage;
+        const jobs = await Jobs.find().skip(skip).limit(limitPerPage);
+        // Get total count of jobs for pagination metadata
+        const totalJobsCount = await Jobs.countDocuments();
+        // Calculate total pages
+        const totalPages = Math.ceil(totalJobsCount / limitPerPage);
+        res.json({
+            jobs,
+            currentPage: page,
+            totalPages,
+            totalJobsCount
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Internal server error");
     }
-})
+});
+
+
+// ROUTE 1.1: get all jobs posted on site based on jobID: GET "/api/managejobs/searchjobbyid/:jobId
+router.get("/searchjobbyid/:id", async (req, res) => {
+    try {
+        const jobId = req.params.id;
+        const job = await Jobs.findById(jobId);
+        if (!job) {
+            return res.status(404).json({ message: "Job not found" });
+        }
+        // console.log(job);
+        res.json(job);
+    } catch (error) {
+        res.status(500).send("Internal server error");
+    }
+});
+
+// v1 : ROUTE 1.2 WITHOUT PAGINATION: get all jobs based on search query: GET /api/managejobsbyfilter/searchjobs?location=desired_location&role=desired_role&companyName=desired_company&jobType=desired_job_type&minSalary=desired_min_salary&maxSalary=desired_max_salary
+// router.get("/searchjobsbyfilter", async (req, res) => {
+//     try {
+//         const { location, role, companyName, jobType, minSalary, maxSalary } = req.query;
+//         const query = {};
+//         if (location) query.location = location;
+//         if (role) query.role = role;
+//         if (companyName) query.companyName = companyName;
+//         if (jobType) query.jobType = jobType;
+//         if (minSalary !== undefined && maxSalary !== undefined) {
+//             query.salary = { $gte: parseInt(minSalary), $lte: parseInt(maxSalary) };
+//         } else if (minSalary !== undefined) {
+//             query.salary = { $gte: parseInt(minSalary) };
+//         } else if (maxSalary !== undefined) {
+//             query.salary = { $lte: parseInt(maxSalary) };
+//         }
+//         const jobs = await Jobs.find(query);
+//         if (!jobs) {
+//             return res.status(404).json({ message: "Job not found" });
+//         }
+//         res.json(jobs);
+//     } catch (error) {
+//         console.error(error);
+//         res.status(500).send("Internal server error");
+//     }
+// });
+
+// ROUTE 1.2 : get all jobs based on search query: GET /api/managejobsbyfilter/searchjobs?location=desired_location&role=desired_role&companyName=desired_company&jobType=desired_job_type&minSalary=desired_min_salary&maxSalary=desired_max_salary
+router.get("/searchjobsbyfilter", async (req, res) => {
+    try {
+        const { location, role, companyName, jobType, minSalary, maxSalary, page, limit } = req.query;
+        // Convert page and limit to integers
+        const pageNumber = parseInt(page) || 1;
+        const limitPerPage = parseInt(limit) || 10; // Default limit is 20
+        // Calculate the number of documents to skip based on the page number and limit
+        const skip = (pageNumber - 1) * limitPerPage;
+        const query = {};
+        if (location) query.location = location;
+        if (role) query.role = role;
+        if (companyName) query.companyName = companyName;
+        if (jobType) query.jobType = jobType;
+        if (minSalary !== undefined && maxSalary !== undefined) {
+            query.salary = { $gte: parseInt(minSalary), $lte: parseInt(maxSalary) };
+        } else if (minSalary !== undefined) {
+            query.salary = { $gte: parseInt(minSalary) };
+        } else if (maxSalary !== undefined) {
+            query.salary = { $lte: parseInt(maxSalary) };
+        }
+        // Execute the query with pagination parameters
+        const jobs = await Jobs.find(query)
+            .skip(skip)
+            .limit(limitPerPage);
+
+        // Count total documents (for calculating total pages)
+        const totalJobsCount = await Jobs.countDocuments(query);
+        // Calculate total pages
+        const totalPages = Math.ceil(totalJobsCount / limitPerPage);
+        // Prepare pagination metadata
+        const paginationMeta = {
+            currentPage: pageNumber,
+            totalPages: totalPages,
+            totalItems: totalJobsCount
+        };
+        // Send the paginated results along with pagination metadata as a JSON response
+        res.json({
+            jobs: jobs,
+            pagination: paginationMeta
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Internal server error");
+    }
+});
 
 // ROUTE 2: Recruiter creates a job using : POST "/api/managejobs/createjob" 
 // -- login required...
